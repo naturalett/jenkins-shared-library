@@ -1,0 +1,6 @@
+    - name: python
+      image: python:3.9.12-slim-buster
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true

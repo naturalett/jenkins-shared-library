@@ -1,0 +1,54 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+<% try { %>
+<% build_label=(build_label) %>
+<% } catch(Exception e) { %>
+<% build_label='default' %>
+<% } %>
+    team: ${build_label}
+    buildnode: 'true'
+spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - ${build_label}
+        topologyKey: kubernetes.io/hostname
+  serviceAccountName: jenkins
+  nodeSelector:
+    kops.k8s.io/instancegroup: ${nodeSelectorName:'buildnodes'}
+  containers:
+    - name: node
+<% try { %>
+<% node_image_repository=(node_image_repository) %>
+<% } catch(Exception e) { %>
+<% node_image_repository='node' %>
+<% } %>
+<% try { %>
+<% node_version=(node_version) %>
+<% } catch(Exception e) { %>
+<% node_version='fermium' %>
+<% } %>
+      image: ${node_image_repository}:${node_version}
+      imagePullPolicy: IfNotPresent
+      command:
+        - cat
+      tty: true
+<% try { %>
+<% items=(image_dependencies) %>
+<% } catch(Exception e) { %>
+<% items=[] } %>
+<% for (item in items) { %>
+<%= item %>
+<% } %>
+  tolerations:
+    - key: 'dedicated'
+      operator: Equal
+      value: 'buildnodes'
