@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
 def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
     def podLabel = "${svcName}-${UUID.randomUUID().toString().substring(0,8)}"
-    def utils = new com.naturalint.utils()
     def tag
 
     pipeline {
@@ -36,8 +35,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                         try {
                             sharedLibrary.executeStage("compile", buildCommands['compileData'])
                         }  catch(Exception e) {
-                            echo "Failed in compilation stage"
-                            echo "${e}"
+                            echo "Failed in compilation stage: ${e.toString()}"
                             throw e
                         }
                     }
@@ -51,8 +49,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                         try {
                             sharedLibrary.executeStage("test", buildCommands['testData'])
                         }  catch(Exception e) {
-                            echo "Failed in unit test stage"
-                            echo "${e}"
+                            echo "Failed in unit test stage: ${e.toString()}"
                             throw e
                         }
                     }
@@ -64,10 +61,9 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     echo "Starting Build and Upload Artifact stage"
                     script {
                         try {
-                            sharedLibrary.executeStage("artifact", buildCommands['artifactData'], tag)
+                            sharedLibrary.executeStage("artifact", buildCommands['artifactData'])
                         }  catch(Exception e) {
-                            echo "Failed in artifact stage"
-                            echo "${e}"
+                            echo "Failed in artifact stage: ${e.toString()}"
                             throw e
                         }
                     }
@@ -79,10 +75,9 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     echo "Starting Integration Tests stage"
                     script {
                         try {
-                            sharedLibrary.executeStage("int-test", buildCommands['intTestData'], tag)
+                            sharedLibrary.executeStage("int-test", buildCommands['intTestData'])
                         }  catch(Exception e) {
-                            echo "Failed in integaration tests stage"
-                            echo "${e}"
+                            echo "Failed in integaration tests stage: ${e.toString()}"
                             throw e
                         }
                     }
@@ -102,10 +97,9 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     script {
                         echo "Starting Deployment stage"
                         try {
-                            sharedLibrary.executeStage("deployment", buildCommands['deploymentData'], tag)
+                            sharedLibrary.executeStage("deployment", buildCommands['deploymentData'])
                         }  catch(Exception e) {
-                            echo "Failed in integaration tests stage"
-                            echo "${e}"
+                            echo "Failed in integaration tests stage: ${e.toString()}"
                             throw e
                         }
                     }

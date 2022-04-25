@@ -1,0 +1,42 @@
+@Library('ni-utils') _
+
+//service name is extrapolated from repository name check
+def svcName = currentBuild.rawBuild.project.parent.displayName
+
+// Define pod
+def pod = libraryResource 'org/foo/infraTemplate.yaml'
+def python = libraryResource 'org/foo/dependencies/python.yaml'
+def template_vars = [
+    'nodeSelectorName': 'buildnodes',
+    'build_label': svcName,
+    'node_version' :'alpine',
+    'image_dependencies' : [python]
+]
+pod = renderTemplate(pod, template_vars)
+print pod
+
+// Define sharedLibrary
+def sharedLibrary = new org.foo.machineLearning() 
+
+// Set slack channel
+def slackChannel = "k8s-jenkins"
+
+// Args for pipeline
+def initiateData = [project: "ML"]
+def compileData = [run: true]
+def testData = [run: true]
+def artifactData = [run: true, uploadTo: ["PyPi","dockerhub"]]def intTestData = [run: false]
+def intTestData = [run: true]
+def deploymentData = [run: true]
+def buildCommands = [
+    initiateData: initiateData,
+    compileData: compileData,
+    testData: testData,
+    artifactData: artifactData,
+    intTestData: intTestData,
+    deploymentData: deploymentData
+]
+
+timestamps {
+    commonPipeline(sharedLibrary, svcName, buildCommands, pod, slackChannel)
+}
