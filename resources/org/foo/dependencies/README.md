@@ -2,7 +2,7 @@
 * [How to use](#how-to-use)
 
 ## How to use
-File: `com/naturalint/xsite-agent-rts.yaml`
+File: `org/foo/infraTemplate.yaml`
 
 ### Default vars
 * nodeSelectorName: buildnodes

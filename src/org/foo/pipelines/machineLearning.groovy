@@ -82,14 +82,15 @@ def intTest(stageData) {
 
 def deployment(stageData) {
     container(containerName) {
-        k8s.helmConfig()
+        k8s.helmConfig(
+            chart: "bitnami",
+            chart_url: "https://charts.bitnami.com/bitnami"
+        )
         k8s.helmDeploy(
-            dry_run       : true,
-            name          : config.app.name,
-            namespace     : config.app.namespace,
-            version_tag   : image_tags_list.get(0),
-            chart_dir     : chart_dir,
-            branch_name   : config.BRANCH_NAME
+            release: "prometheus",
+            chart: "bitnami/kube-prometheus",
+            namespace: "default",
+            version: "6.9.6"
         )
     }
 }
