@@ -1,0 +1,6 @@
+    - name: docker
+      image: docker:20.10
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true

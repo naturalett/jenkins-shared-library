@@ -44,18 +44,18 @@ def python = libraryResource 'org/foo/dependencies/python.yaml'
 def template_vars = [
     'nodeSelectorName': 'buildnodes',
     'build_label': svcName,
-    'node_version' :'alpine',
+    'python_version' : '3.7',
     'image_dependencies' : [python]
 ]
 pod = renderTemplate(pod, template_vars)
-def sharedLibrary = new org.foo.machineLearning() 
+def sharedLibrary = new org.foo.pipelines.machineLearning() 
 
 def initiateData = [project: "ML"]
 def compileData = [run: true]
-def testData = [run: true]
+def testData = [run: false]
 def artifactData = [run: true, uploadTo: ["PyPi","dockerhub"]]
-def intTestData = [run: true]
-def deploymentData = [run: true]
+def intTestData = [run: false]
+def deploymentData = [run: true, environments: ["staging"]]
 def buildCommands = [
     initiateData: initiateData,
     compileData: compileData,

@@ -1,0 +1,6 @@
+    - name: java
+      image: openjdk:11-jdk-slim
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true

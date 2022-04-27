@@ -25,18 +25,18 @@ spec:
   nodeSelector:
     kops.k8s.io/instancegroup: ${nodeSelectorName:'buildnodes'}
   containers:
-    - name: node
+    - name: python
 <% try { %>
-<% node_image_repository=(node_image_repository) %>
+<% python_image_repository=(python_image_repository) %>
 <% } catch(Exception e) { %>
-<% node_image_repository='node' %>
+<% python_image_repository='python' %>
 <% } %>
 <% try { %>
-<% node_version=(node_version) %>
+<% python_version=(python_version) %>
 <% } catch(Exception e) { %>
-<% node_version='fermium' %>
+<% python_version='3.7' %>
 <% } %>
-      image: ${node_image_repository}:${node_version}
+      image: ${python_image_repository}:${python_version}
       imagePullPolicy: IfNotPresent
       command:
         - cat

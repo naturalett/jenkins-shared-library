@@ -1,0 +1,6 @@
+    - name: amazon
+      image: amazon/aws-cli:2.5.3
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true
