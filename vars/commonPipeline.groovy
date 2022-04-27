@@ -1,4 +1,6 @@
 #!/usr/bin/env groovy
+@Library('ni-utils-private') _
+
 def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
     def podLabel = "${svcName}-${UUID.randomUUID().toString().substring(0,8)}"
     def tag
@@ -119,7 +121,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "failureStep")) {
                         sharedLibrary.failureStep()
                     } else { // Default failure is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
@@ -128,7 +130,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "successStep")) {
                         sharedLibrary.successStep()
                     } else { // Default success is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
@@ -137,7 +139,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "unstableStep")) {
                         sharedLibrary.unstableStep()
                     } else { // Default unstable is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
