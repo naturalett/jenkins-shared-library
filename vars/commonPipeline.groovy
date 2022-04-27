@@ -1,9 +1,9 @@
 #!/usr/bin/env groovy
-@Library('ni-utils-private@fix-main') _
+// @Library('ni-utils-private@fix-main') _
 
 def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
     def podLabel = "${svcName}-${UUID.randomUUID().toString().substring(0,8)}"
-    def tag
+    def tag 
 
     pipeline {
         agent {
