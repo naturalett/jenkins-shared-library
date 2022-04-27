@@ -24,6 +24,7 @@ import groovy.transform.Field
 @Field String repository = "machine-learning"
 @Field Boolean openSource = false
 @Field String tag
+@Field String image
 @Field def k8s = new org.foo.functions.k8s()
 
 def executeStage(stageName, stageData, tag="") {
@@ -57,7 +58,7 @@ def initializaion(stageData) {
 
 def compile(stageData) {
     container(containerName) {
-        def image = docker.build("${organization}/${svcName}")
+        image = docker.build("${organization}/${svcName}")
     }
 }
 
@@ -75,7 +76,7 @@ def artifact(stageData) {
         stageData.artifactType.each { artifactType ->
             switch (artifactType) {
                 case "DockerHub":
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockercred') {
                         if (["master", "main"].contains(GIT_BRANCH)) { image.push("latest") }
                         image.push(tag)
                     }
