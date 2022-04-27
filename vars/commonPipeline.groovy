@@ -1,6 +1,4 @@
 #!/usr/bin/env groovy
-// @Library('ni-utils-private@fix-main') _
-
 def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
     def podLabel = "${svcName}-${UUID.randomUUID().toString().substring(0,8)}"
     def tag 
@@ -20,7 +18,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     script {
                         echo "Starting Initialization stage"
                         try {
-                            sharedLibrary.executeStage("initializaion", buildCommands['compileData'])
+                            tag = sharedLibrary.executeStage("initializaion", buildCommands['compileData'])
                         }  catch(Exception e) {
                             echo "Failed in initializaion stage"
                             echo "${e}"

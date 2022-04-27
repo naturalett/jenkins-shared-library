@@ -18,7 +18,7 @@ import groovy.transform.Field
     - Deployment
  */
 
-@Field String svcName = currentBuild.rawBuild.project.parent.displayName
+@Field String svcName = (scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]).toLowerCase()
 @Field String containerName = 'docker'
 @Field String organization = "naturalett"
 @Field String repository = "machine-learning"
@@ -51,6 +51,8 @@ def executeStage(stageName, stageData, tag="") {
 
 def initializaion(stageData) {
     tag = checkout(scm).GIT_COMMIT[0..6]
+    echo "Tag: ${tag}"
+    return tag
 }
 
 def compile(stageData) {
