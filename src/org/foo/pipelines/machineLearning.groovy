@@ -63,7 +63,7 @@ def compile(stageData) {
 }
 
 def test(stageData) {
-    container('python') {
+    container(containerName) {
         args = "python -m unittest"
         status =  image.inside { c ->
             sh (script: args, returnStatus: true)

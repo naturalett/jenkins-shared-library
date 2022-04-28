@@ -1,16 +1,18 @@
-// @Library('ni-utils') _
+@Library('ni-utils') _
 
 //service name is extrapolated from repository name check
-def svcName = currentBuild.rawBuild.project.parent.displayName
+def svcName = (scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]).toLowerCase()
 
 // Define pod
 def pod = libraryResource 'org/foo/infraTemplate.yaml'
 def amazon = libraryResource 'org/foo/dependencies/amazon.yaml'
+def docker = libraryResource 'org/foo/dependencies/docker.yaml'
+def java = libraryResource 'org/foo/dependencies/java.yaml'
 def template_vars = [
     'nodeSelectorName': 'buildnodes',
     'build_label': svcName,
     'python_version' : '3.7.13-slim',
-    'image_dependencies' : [amazon]
+    'image_dependencies' : [amazon, docker, java]
 ]
 pod = renderTemplate(pod, template_vars)
 print pod

@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
     def podLabel = "${svcName}-${UUID.randomUUID().toString().substring(0,8)}"
-    def tag 
+    def tag
 
     pipeline {
         agent {
