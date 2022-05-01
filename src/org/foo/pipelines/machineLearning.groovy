@@ -95,16 +95,11 @@ def intTest(stageData) {
 
 def deployment(stageData) {
     container(containerName) {
-        if (openSource) {
-            k8s.helmConfig(
-                chart: "t3n",
-                chart_url: "https://storage.googleapis.com/t3n-helm-charts"
-            )
-        }
+        if (openSource) { k8s.helmConfig()}
         stageData.environments { environment ->
             k8s.helmDeploy(
                 release: "${svcName}-${environment}",
-                chart: "t3n/web",
+                chart: "./helm",
                 namespace: "default",
                 version: "1.0.0"
             )
