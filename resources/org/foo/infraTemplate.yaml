@@ -52,3 +52,8 @@ spec:
     - key: 'dedicated'
       operator: Equal
       value: 'buildnodes'
+  volumes:
+  - hostPath:
+      path: /var/run/docker.sock
+      type: ""
+    name: dockersock

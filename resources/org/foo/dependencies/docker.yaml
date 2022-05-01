@@ -4,3 +4,6 @@
       command:
         - cat
       tty: true
+      volumeMounts:
+          - mountPath: /var/run/docker.sock
+            name: dockersock

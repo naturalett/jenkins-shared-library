@@ -3,6 +3,7 @@ import groovy.transform.Field
 
 // https://docs.groovy-lang.org/3.0.7/html/gapi/groovy/transform/Field.html
 // Variable annotation used for changing the scope of a variable within a script from being within the run method of the script to being at the class level for the script.
+// https://artifacthub.io/packages/helm/linzhengen/web
 
 /**
  * Upload python package
@@ -18,12 +19,12 @@ import groovy.transform.Field
     - Deployment
  */
 
-@Field String svcName = currentBuild.rawBuild.project.parent.displayName
+@Field String svcName = (scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]).toLowerCase()
 @Field String containerName = 'docker'
 @Field String organization = "naturalett"
-@Field String repository = "machine-learning"
-@Field Boolean openSource = false
+@Field Boolean openSource = true
 @Field String tag
+@Field String image
 @Field def k8s = new org.foo.functions.k8s()
 
 def executeStage(stageName, stageData, tag="") {
@@ -51,11 +52,13 @@ def executeStage(stageName, stageData, tag="") {
 
 def initializaion(stageData) {
     tag = checkout(scm).GIT_COMMIT[0..6]
+    echo "Tag: ${tag}"
+    return tag
 }
 
 def compile(stageData) {
     container(containerName) {
-        def image = docker.build("${organization}/${svcName}")
+        image = docker.build("${organization}/${svcName}")
     }
 }
 
@@ -73,7 +76,7 @@ def artifact(stageData) {
         stageData.artifactType.each { artifactType ->
             switch (artifactType) {
                 case "DockerHub":
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockercred') {
                         if (["master", "main"].contains(GIT_BRANCH)) { image.push("latest") }
                         image.push(tag)
                     }
@@ -92,18 +95,13 @@ def intTest(stageData) {
 
 def deployment(stageData) {
     container(containerName) {
-        if (openSource) {
-            k8s.helmConfig(
-                chart: "bitnami",
-                chart_url: "https://charts.bitnami.com/bitnami"
-            )
-        }
+        if (openSource) { k8s.helmConfig()}
         stageData.environments { environment ->
             k8s.helmDeploy(
                 release: "${svcName}-${environment}",
-                chart: "bitnami/kube-prometheus",
+                chart: "./helm",
                 namespace: "default",
-                version: "6.9.6"
+                version: "1.0.0"
             )
         }
     }

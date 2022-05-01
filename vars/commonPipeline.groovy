@@ -18,7 +18,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     script {
                         echo "Starting Initialization stage"
                         try {
-                            sharedLibrary.executeStage("initializaion", buildCommands['compileData'])
+                            tag = sharedLibrary.executeStage("initializaion", buildCommands['compileData'])
                         }  catch(Exception e) {
                             echo "Failed in initializaion stage"
                             echo "${e}"
@@ -119,7 +119,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "failureStep")) {
                         sharedLibrary.failureStep()
                     } else { // Default failure is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
@@ -128,7 +128,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "successStep")) {
                         sharedLibrary.successStep()
                     } else { // Default success is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
@@ -137,7 +137,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     if (sharedLibrary.getMetaClass().respondsTo(sharedLibrary, "unstableStep")) {
                         sharedLibrary.unstableStep()
                     } else { // Default unstable is to set the tag as description
-                        utils.setDescription(tag)
+                        currentBuild.description = tag
                     }
                 }
             }
