@@ -26,6 +26,7 @@ import groovy.transform.Field
 @Field String tag
 @Field String image
 @Field def k8s = new org.foo.functions.k8s()
+@Field def creds = new org.foo.functions.infraCreds()
 
 def executeStage(stageName, stageData, tag="") {
     switch (stageName) {
@@ -58,6 +59,7 @@ def initializaion(stageData) {
 
 def compile(stageData) {
     container(containerName) {
+        creds.setupCredentials()
         image = docker.build("${organization}/${svcName}")
     }
 }
