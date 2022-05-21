@@ -27,7 +27,7 @@ parent = Jenkins.instance
 
 // Define git repository
 scm = new GitSCM(sharedLibrariesUrl)
-scm.userRemoteConfigs = scm.createRepoList(sharedLibrariesUrl, "<GITHU_TOKEN")
+scm.userRemoteConfigs = scm.createRepoList(sharedLibrariesUrl, "<GITHU_TOKEN>")
 scm.branches = [new BranchSpec("*/master")];
 
 for (projectName in projectNames) {
