@@ -14,7 +14,7 @@ def sharedLibrariesUrl = "https://github.com/naturalett/jenkins-shared-libraries
 
 // Authentication
 def fetch(addr, params = [:]) {
-  def auth = "<GITHU_AUTH>"
+  def auth = "<GITHUB_AUTH>"
   def json = new JsonSlurper()
   return json.parse(addr.toURL().newReader(requestProperties: [
     "Authorization": "token ${auth}".toString(),
@@ -27,7 +27,7 @@ parent = Jenkins.instance
 
 // Define git repository
 scm = new GitSCM(sharedLibrariesUrl)
-scm.userRemoteConfigs = scm.createRepoList(sharedLibrariesUrl, "<GITHU_TOKEN>")
+scm.userRemoteConfigs = scm.createRepoList(sharedLibrariesUrl, "<GITHUB_TOKEN>")
 scm.branches = [new BranchSpec("*/master")];
 
 for (projectName in projectNames) {
