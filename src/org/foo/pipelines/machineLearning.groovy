@@ -29,8 +29,8 @@ import groovy.transform.Field
 
 def executeStage(stageName, stageData, tag="") {
     switch (stageName) {
-        case "initializaion": 
-            this.initializaion(stageData)
+        case "init": 
+            this.init(stageData)
             break; 
         case "compile": 
             this.compile(stageData)
@@ -50,7 +50,7 @@ def executeStage(stageName, stageData, tag="") {
     }
 }
 
-def initializaion(stageData) {
+def init(stageData) {
     namespace = stageData.namespace
     tag = checkout(scm).GIT_COMMIT[0..6]
     echo "Tag: ${tag}"
