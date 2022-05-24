@@ -12,7 +12,7 @@ def setupCredentials(Map args) {
                     "cmd" : 'echo $credentials > ${MAVEN_HOME}/conf/settings.xml'
                 ],
                 "python" : [
-                    "creds" : "pip-conf"
+                    "creds" : "pip-conf",
                     "container" : "Python",
                     "cmd" : 'echo "$credentials" > /etc/pip.conf && echo "$credentials" > ${WORKSPACE}/pip.conf'
                 ]
