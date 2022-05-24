@@ -23,7 +23,7 @@ import groovy.transform.Field
 @Field String containerName = 'docker'
 @Field String organization = "naturalett"
 @Field Boolean openSource = true
-@Field String tag
+@Field String tag, namespace
 @Field String image
 @Field def k8s = new org.foo.functions.k8s()
 @Field def creds = new org.foo.functions.infraCreds()
@@ -52,6 +52,7 @@ def executeStage(stageName, stageData, tag="") {
 }
 
 def initializaion(stageData) {
+    namespace = stageData.namespace
     tag = checkout(scm).GIT_COMMIT[0..6]
     echo "Tag: ${tag}"
     return tag
@@ -107,6 +108,19 @@ def deployment(stageData) {
             )
         }
     }
+}
+
+def successStep() {
+    for (environment in ["staging", "production"]) {
+        def url = env.JENKINS_URL + "/job/Deploy_Application/parambuild" + \
+        "?environment=${environment}" + \
+        "&namespace=${namespace}" + \
+        "&commitHash=${tag}"
+
+        echo 'set badge for jenkins job'
+        addBadge(icon : "success.gif", text: "Deploy to ${environment}", link: url)
+    }
+    currentBuild.description = tag
 }
 
 return this

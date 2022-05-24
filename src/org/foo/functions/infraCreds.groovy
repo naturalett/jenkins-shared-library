@@ -9,12 +9,12 @@ def setupCredentials(Map args=[:]) {
                 "Java" : [
                     "creds" : "settings-xml",
                     "container" : "Java",
-                    "cmd" : 'echo $credentials > ${MAVEN_HOME}/conf/settings.xml'
+                    "cmd" : '{ echo $credentials > ${MAVEN_HOME}/conf/settings.xml; } 2> /dev/null'
                 ],
                 "Python" : [
                     "creds" : "pip-conf",
                     "container" : "Python",
-                    "cmd" : 'echo "$credentials" > /etc/pip.conf && echo "$credentials" > ${WORKSPACE}/pip.conf'
+                    "cmd" : '{ echo "$credentials" > /etc/pip.conf; } 2> /dev/null && { echo "$credentials" > ${WORKSPACE}/pip.conf; } 2> /dev/null'
                 ]
     ]
     withCredentials([string(credentialsId: settings[args.projLanguage]["creds"], variable: 'credentials')]) {
