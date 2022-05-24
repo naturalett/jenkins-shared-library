@@ -13,7 +13,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
         }
         stages {
             stage('Initialization') {
-                when { expression { buildCommands['initializaion'].run } }
+                when { expression { buildCommands['initiateData'].run } }
                 steps {
                     script {
                         echo "Starting Initialization stage"
