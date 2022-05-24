@@ -1,5 +1,5 @@
-    - name: jq
-      image: stedolan/jq
+    - name: alpine-curl-jq
+      image: dwdraju/alpine-curl-jq
       imagePullPolicy: Always
       command:
         - cat
