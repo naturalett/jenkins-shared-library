@@ -18,7 +18,7 @@ def call(sharedLibrary, svcName, buildCommands, pod, slackChannel) {
                     script {
                         echo "Starting Initialization stage"
                         try {
-                            tag = sharedLibrary.executeStage("initializaion", buildCommands['initializaion'])
+                            tag = sharedLibrary.executeStage("initializaion", buildCommands['initiateData'])
                         }  catch(Exception e) {
                             echo "Failed in initializaion stage"
                             echo "${e}"
