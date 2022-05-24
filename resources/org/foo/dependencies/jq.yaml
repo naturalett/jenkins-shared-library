@@ -1,0 +1,6 @@
+    - name: jq
+      image: stedolan/jq
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true

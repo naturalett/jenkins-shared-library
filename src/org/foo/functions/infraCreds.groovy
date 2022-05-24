@@ -3,7 +3,7 @@ import groovy.transform.Field
 
 @Field def utils = new org.foo.functions.utils()
 
-def setupCredentials(Map args) {
+def setupCredentials(Map args=[:]) {
     if (!args.projLanguage) args.projLanguage = utils.getProjectLanguage()
     def settings = [
                 "java" : [
