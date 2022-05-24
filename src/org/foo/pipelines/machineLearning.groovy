@@ -20,12 +20,11 @@ import groovy.transform.Field
  */
 
 @Field String svcName = (scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]).toLowerCase()
-@Field String containerName = 'docker'
-@Field String organization = "naturalett"
+@Field String containerName = 'docker', organization = "naturalett"
 @Field Boolean openSource = true
-@Field String tag, namespace
-@Field String image
+@Field String tag, namespace, author, image
 @Field def k8s = new org.foo.functions.k8s()
+@Field def git = new org.foo.functions.github()
 @Field def creds = new org.foo.functions.infraCreds()
 
 def executeStage(stageName, stageData, tag="") {
@@ -116,11 +115,12 @@ def successStep() {
         "?environment=${environment}" + \
         "&namespace=${namespace}" + \
         "&commitHash=${tag}"
-
-        echo 'set badge for jenkins job'
         addBadge(icon : "success.gif", text: "Deploy to ${environment}", link: url)
     }
-    currentBuild.description = tag
+    author = git.getGitAuthor(
+        commit: tag
+    )
+    currentBuild.description = "Commit: ${tag}<br>Author: ${author}"
 }
 
 return this

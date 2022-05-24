@@ -1,0 +1,6 @@
+    - name: git
+      image: alpine/git
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true
