@@ -5,7 +5,9 @@ def getProjectLanguage(Map args=[:]) {
     container(args.containerName) {
         return sh(script: """curl -s \
                             https://api.github.com/repos/naturalett/streamlit-apps/languages \
-                            | jq --stream -n 'input[0][]'""", returnStdout: true)
+                            | jq --stream -n 'input[0][]' \
+                            | tr -d '"' \
+                            | tr -d '\n' """, returnStdout: true)
     }
 }
 

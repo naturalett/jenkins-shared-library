@@ -6,12 +6,12 @@ import groovy.transform.Field
 def setupCredentials(Map args=[:]) {
     if (!args.projLanguage) args.projLanguage = utils.getProjectLanguage()
     def settings = [
-                "java" : [
+                "Java" : [
                     "creds" : "settings-xml",
                     "container" : "Java",
                     "cmd" : 'echo $credentials > ${MAVEN_HOME}/conf/settings.xml'
                 ],
-                "python" : [
+                "Python" : [
                     "creds" : "pip-conf",
                     "container" : "Python",
                     "cmd" : 'echo "$credentials" > /etc/pip.conf && echo "$credentials" > ${WORKSPACE}/pip.conf'
