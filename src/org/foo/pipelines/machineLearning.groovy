@@ -52,8 +52,7 @@ def executeStage(stageName, stageData, tag="") {
 
 def initializaion(stageData) {
     namespace = stageData.namespace
-    // tag = checkout(scm).GIT_COMMIT[0..6]
-    tag = "Test"
+    tag = checkout(scm).GIT_COMMIT[0..6]
     echo "Tag: ${tag}"
     return tag
 }

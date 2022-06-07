@@ -1,6 +1,7 @@
 @Library('ni-utils') _
 
 //service name is extrapolated from repository name check
+// def svcName = env.JOB_BASE_NAME
 def svcName = (scm.getUserRemoteConfigs()[0].getUrl().tokenize('/')[3].split("\\.")[0]).toLowerCase()
 
 // Define pod

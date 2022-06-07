@@ -51,7 +51,7 @@ spec:
   tolerations:
     - key: 'dedicated'
       operator: Equal
-      value: 'buildnodes'
+      value: ${nodeSelectorName:'buildnodes'}
   volumes:
   - hostPath:
       path: /var/run/docker.sock
