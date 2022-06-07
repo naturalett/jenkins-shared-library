@@ -22,8 +22,6 @@ spec:
             - ${build_label}
         topologyKey: kubernetes.io/hostname
   serviceAccountName: jenkins
-  nodeSelector:
-    kops.k8s.io/instancegroup: ${nodeSelectorName:'buildnodes'}
   containers:
     - name: python
 <% try { %>
@@ -48,12 +46,18 @@ spec:
 <% for (item in items) { %>
 <%= item %>
 <% } %>
-  tolerations:
-    - key: 'dedicated'
-      operator: Equal
-      value: ${nodeSelectorName:'buildnodes'}
   volumes:
   - hostPath:
       path: /var/run/docker.sock
       type: ""
     name: dockersock
+<% try { %>
+<% nodeSelectorName=(nodeSelectorName) %>
+  nodeSelector:
+    kops.k8s.io/instancegroup: ${nodeSelectorName}
+  tolerations:
+    - key: 'dedicated'
+      operator: Equal
+      value: ${nodeSelectorName}
+<% } catch(Exception e) { %>
+<% } %>
