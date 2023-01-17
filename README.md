@@ -19,11 +19,11 @@ helm upgrade -i workshop --set persistence.existingClaim=jenkins-pv-claim --set 
 
 
 Kubernetes: \
-    1. `kubectl apply -f ~/Repos/private/jenkins-shared-library/cluster-role-binding.yaml`
+    1. `kubectl apply -f ~/Repos/private/jenkins-shared-library/cluster-role-binding.yaml` \
     2. `kubectl create serviceaccount jenkins`
 
 Github: \
-    1. `Create a personal token: https://github.com/settings/tokens`
+    1. `Create a personal token: https://github.com/settings/tokens` \
     1.1 `Note: Jenkins. Scope: repo.`
 
 Jenkins: \
@@ -38,7 +38,7 @@ index-url = https://pypi.python.org/simple" | base64 | pbcopy
     1.3 ID: github
     1.4 Description: github
 
-Jenkins: \
+Jenkins:
 * New Item -> Organization Folder
 * Owner: naturalett
 * Projects:
