@@ -24,29 +24,30 @@ import groovy.transform.Field
 @Field Boolean openSource = true
 @Field String tag, namespace, author, image
 @Field def k8s = new org.foo.functions.k8s()
+@Field def dockerActions = new org.foo.functions.docker()
 @Field def git = new org.foo.functions.github()
 @Field def creds = new org.foo.functions.infraCreds()
 
 def executeStage(stageName, stageData, tag="") {
     switch (stageName) {
-        case "initializaion": 
+        case "initializaion":
             this.initializaion(stageData)
-            break; 
-        case "compile": 
+            break;
+        case "compile":
             this.compile(stageData)
-            break; 
+            break;
         case "test":
             this.test(stageData)
             break;
         case "artifact":
             this.artifact(stageData)
-            break; 
-        case "int-test": 
+            break;
+        case "int-test":
             this.intTest(stageData)
             break;
-        case "deployment": 
+        case "deployment":
             this.deployment()
-            break; 
+            break;
     }
 }
 
@@ -60,7 +61,10 @@ def initializaion(stageData) {
 def compile(stageData) {
     container(containerName) {
         creds.setupCredentials()
-        image = docker.build("${organization}/${svcName}")
+        image = dockerActions.buildImage(
+            imageName: "${organization}/${svcName}"
+        )
+        // Alternative way to build the image: image = docker.build("${organization}/${svcName}")
     }
 }
 

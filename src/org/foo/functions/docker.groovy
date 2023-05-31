@@ -17,6 +17,19 @@ def pushImage(Map args=[:]) {
     }
 }
 
+def buildImage(Map args=[:]) {
+    if (!args.containerName) args.containerName = containerName
+    if (!args.version) args.version = "latest"
+    container(args.containerName) {
+        return docker.withRegistry(
+                urlRegistry,
+                login
+            ) {
+            docker.build("${args.imageName}:${args.version}")
+        }
+    }
+}
+
 def getImage(Map args=[:]) {
     if (!args.containerName) args.containerName = containerName
     if (!args.version) args.version = "latest"
